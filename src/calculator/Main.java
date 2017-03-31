@@ -18,6 +18,15 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
+        Village A = new Village("641|423");
+        Village B = new Village("635|420");
+        TravelTime tt = new TravelTime(B);
+        tt.setAttackTime(new Time(21, 0, 0));
+        tt.countLength(A);
+        tt.setEstimatedTime(A);
+        tt.setSendTime(A);
+        A.getAllTimes();
+
+        //launch(args);
     }
 }
