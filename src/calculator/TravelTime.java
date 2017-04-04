@@ -9,7 +9,7 @@ public class TravelTime {
     private Time attackTime;
     private double length;
 
-    TravelTime(Village toAttack){
+    public TravelTime(Village toAttack){
         timeOnField.add(new Time(0, 18, 0)); // pik
         timeOnField.add(new Time(0, 22, 0)); // miecznik
         timeOnField.add(new Time(0, 18, 0)); // topornik

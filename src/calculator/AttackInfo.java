@@ -1,10 +1,7 @@
 package calculator;
 
-import javafx.collections.ObservableList;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 public class AttackInfo {
     private int ownersAmount;

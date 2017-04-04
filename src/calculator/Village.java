@@ -13,7 +13,7 @@ public class Village {
     List<Time> sendTime = new ArrayList<>();
     List<Double> estimatedTimeToTarget = new ArrayList<>();
 
-    Village(String coord){
+    public Village(String coord){
         this.coords = coord;
         String tmp [] = coord.split("\\|");
         this.x = Integer.parseInt(tmp[0]);

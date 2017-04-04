@@ -9,7 +9,7 @@ public class TimeDisplay {
     public List<String> neededSendTimes = new ArrayList<>();
     public List<String> attackTypeString = new ArrayList<>();
 
-    TimeDisplay(Village village){
+    public TimeDisplay(Village village){
         this.village = village;
     }
 
@@ -60,7 +60,6 @@ public class TimeDisplay {
         }else if(type.equals("s") || type.equals("S")){
             nameOfUnit = "szlachcic";
             out = 11;
-            System.out.println("SZLACHCIC");
         }
         neededEstimatedTimes.add(village.getSendTime(out));
         neededSendTimes.add(village.getEstimatedTime(out));

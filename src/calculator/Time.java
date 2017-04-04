@@ -18,7 +18,7 @@ public class Time {
         this.second = second;
         this.day = day;
     }
-    Time(int [] time){
+    public Time(int[] time){
         this.hour = time[0];
         this.minute = time[1];
         this.second = time[2];

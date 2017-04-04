@@ -6,7 +6,7 @@ import java.util.List;
 public class Owner {
     private String name;
     private int amountOfVillages;
-    List<Village> villages = new ArrayList<>();
+    public List<Village> villages = new ArrayList<>();
 
     Owner(String name){
         this.name = name;
