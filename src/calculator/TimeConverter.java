@@ -65,6 +65,15 @@ public class TimeConverter {
         return time;
     }
 
+    public static int [] convertStringToTable(String time){
+        String [] tmp = time.split(":");
+        int [] t = new int[4];
+        t[0] = Integer.parseInt(tmp[0]);
+        t[1] = Integer.parseInt(tmp[1]);
+        t[2] = Integer.parseInt(tmp[2]);
+
+        return t;
+    }
     private static int round(double number){
         int out = (int) number;
         number = number - (int)number;
