@@ -11,6 +11,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -42,26 +44,69 @@ public class VillagesCoords {
 
         VBox vbox = new VBox(1);
         vbox.setAlignment(Pos.CENTER);
+
+        GridPane units = new GridPane();
+        units.setPadding(new Insets(20,10,20,10));
+        units.getColumnConstraints().add(new ColumnConstraints(200));
+        units.getColumnConstraints().add(new ColumnConstraints(200));
+        units.getColumnConstraints().add(new ColumnConstraints(200));
+        units.setAlignment(Pos.CENTER);
+
+        Label unitsDescription1 = new Label("p/P - pikinier\n"
+                                            + "m/M - miecznik\n"
+                                            + "t/T - topornik\n"
+                                            + "ł/Ł - łucznik\n");
+        Label unitsDescription2 = new Label("z - zwiadowca\n"
+                                            + "lk/LK - lekka kaw.\n"
+                                            + "łuk/ŁUK - łucznik na koniu\n"
+                                            + "ck/CK - ciężka kaw.\n");
+        Label unitsDescription3 = new Label("tar/TAR - taran\n"
+                                            + "k/K - katapulta\n"
+                                            + "r/R - rycerz\n"
+                                            + "s/S - szlachcic\n");
+
+        unitsDescription1.setFont(Font.font(null, FontWeight.BOLD, 14));
+        unitsDescription2.setFont(Font.font(null, FontWeight.BOLD, 14));
+        unitsDescription3.setFont(Font.font(null, FontWeight.BOLD, 14));
+        units.addRow(0, unitsDescription1, unitsDescription2, unitsDescription3);
+
+        vbox.getChildren().add(units);
+
+        GridPane villageInfo = new GridPane();
+        villageInfo.setPadding(new Insets(40,10,40,10));
+        villageInfo.getColumnConstraints().add(new ColumnConstraints(150));
+        villageInfo.getColumnConstraints().add(new ColumnConstraints(200));
+        villageInfo.getColumnConstraints().add(new ColumnConstraints(200));
+        villageInfo.setAlignment(Pos.CENTER);
+        villageInfo.setVgap(10);
+        villageInfo.setHgap(10);
+
+        Label ownerNameLabel = new Label("Właściciel");
+        ownerNameLabel.setFont(Font.font(null, FontWeight.BOLD, 14));
+        Label villageCoordLabel = new Label("Coordy");
+        villageCoordLabel.setFont(Font.font(null, FontWeight.BOLD, 14));
+        Label typeOfAttackLabel = new Label("Typ ataku");
+        typeOfAttackLabel.setFont(Font.font(null, FontWeight.BOLD, 14));
+
+        villageInfo.addRow(0, ownerNameLabel, villageCoordLabel, typeOfAttackLabel);
+
         ScrollPane scroller = new ScrollPane(vbox);
         scroller.setFitToWidth(true);
 
         for(int i=0; i<attackInfo.getOwnersAmount(); ++i){
             for(int j=0; j<attackInfo.getOwner(i).getAmountOfVillages(); ++j){
-                HBox villageInfo = new HBox();
-                villageInfo.setPadding(new Insets(5,12,5,12));
-                villageInfo.setSpacing(10);
-                villageInfo.setAlignment(Pos.CENTER);
-
                 Label ownerName = new Label(attackInfo.getOwner(i).getName());
                 TextField villageCoord = new TextField();
                 TextField typeOfAttack = new TextField();
 
-                villageInfo.getChildren().addAll(ownerName, villageCoord, typeOfAttack);
-                vbox.getChildren().add(villageInfo);
+                villageInfo.addRow(i+1, ownerName, villageCoord, typeOfAttack);
+
                 listOfCoords.add(villageCoord);
                 listOfTypesOfAttacks.add(typeOfAttack);
             }
         }
+
+        vbox.getChildren().add(villageInfo);
 
         Button accept = new Button("Oblicz");
         Button goBack = new Button("Powrót");
@@ -101,6 +146,8 @@ public class VillagesCoords {
         settingsButtons.setAlignment(Pos.CENTER);
         settingsButtons.setSpacing(500);
         settingsButtons.getChildren().addAll(goBack, accept);
+
+        vbox.getChildren().add(settingsButtons);
 
         window.setScene(new Scene(vbox, 700, 800));
     }

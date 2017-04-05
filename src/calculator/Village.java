@@ -9,6 +9,7 @@ public class Village {
     private String coords;
     private String typesOfAttack;
     private int amountOfAttack;
+    private TimeDisplay timeDisplayer;
 
     List<Time> sendTime = new ArrayList<>();
     List<Double> estimatedTimeToTarget = new ArrayList<>();
@@ -26,6 +27,14 @@ public class Village {
 
     public int getY(){
         return y;
+    }
+
+    public TimeDisplay getTimeDisplayer() {
+        return timeDisplayer;
+    }
+
+    public void setTimeDisplayer(TimeDisplay timeDisplayer) {
+        this.timeDisplayer = timeDisplayer;
     }
 
     public int getAmountOfAttack() {

@@ -76,6 +76,7 @@ public class ResultsDisplayer {
                 Village village = owner.villages.get(j);
                 TimeDisplay td = new TimeDisplay(village);
                 village.setAmountOfAttack(td.checkAttackTypeAndSave());
+                village.setTimeDisplayer(td);
 
                 for(int k=0; k<village.getAmountOfAttack(); ++k){
                     counter++;
