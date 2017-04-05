@@ -93,13 +93,15 @@ public class VillagesCoords {
         ScrollPane scroller = new ScrollPane(vbox);
         scroller.setFitToWidth(true);
 
+        int count = 0;
         for(int i=0; i<attackInfo.getOwnersAmount(); ++i){
             for(int j=0; j<attackInfo.getOwner(i).getAmountOfVillages(); ++j){
+                count++;
                 Label ownerName = new Label(attackInfo.getOwner(i).getName());
                 TextField villageCoord = new TextField();
                 TextField typeOfAttack = new TextField();
 
-                villageInfo.addRow(i+1, ownerName, villageCoord, typeOfAttack);
+                villageInfo.addRow(count, ownerName, villageCoord, typeOfAttack);
 
                 listOfCoords.add(villageCoord);
                 listOfTypesOfAttacks.add(typeOfAttack);
@@ -149,6 +151,6 @@ public class VillagesCoords {
 
         vbox.getChildren().add(settingsButtons);
 
-        window.setScene(new Scene(vbox, 700, 800));
+        window.setScene(new Scene(scroller, 700, 800));
     }
 }
