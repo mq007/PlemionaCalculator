@@ -14,6 +14,8 @@ public class TimeDisplay {
     }
 
     public int checkAttackTypeAndSave(){
+        System.out.println("Village: " + village.getCoords());
+        System.out.println("types: " + village.getTypesOfAttack());
         String [] types = village.getTypesOfAttack().split(";");
         for(String type : types){
             setAttackTypeAndNeededTime(type);

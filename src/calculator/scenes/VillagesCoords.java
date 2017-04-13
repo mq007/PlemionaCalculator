@@ -1,14 +1,13 @@
 package calculator.scenes;
 
 import calculator.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
@@ -26,6 +25,8 @@ public class VillagesCoords {
 
     Stage window;
     AttackInfo attackInfo;
+    List<String> allVillagesNames = new ArrayList<>();
+    List<String> allVillagesCoords = new ArrayList<>();
 
     public VillagesCoords(AttackInfo attackInfo, Stage window){
         this.window = window;
@@ -35,15 +36,17 @@ public class VillagesCoords {
 
     private void setScene(){
         System.out.println("setVillagesCoordsScene");
-        List<TextField> listOfCoords = new ArrayList<>();
+        List<ComboBox> listOfCoords = new ArrayList<>();
         List<TextField> listOfTypesOfAttacks = new ArrayList<>();
 
         Label sceneDescription = new Label("Wprowadź dane dotyczące wiosek i rodzaj ataku");
         sceneDescription.setAlignment(Pos.CENTER);
         sceneDescription.setFont(Font.font(null, FontWeight.BOLD, 20));
+        sceneDescription.setPadding(new Insets(40,10,40,10));
 
         VBox vbox = new VBox(1);
         vbox.setAlignment(Pos.CENTER);
+        vbox.getChildren().add(sceneDescription);
 
         GridPane units = new GridPane();
         units.setPadding(new Insets(20,10,20,10));
@@ -51,6 +54,7 @@ public class VillagesCoords {
         units.getColumnConstraints().add(new ColumnConstraints(200));
         units.getColumnConstraints().add(new ColumnConstraints(200));
         units.setAlignment(Pos.CENTER);
+
 
         Label unitsDescription1 = new Label("p/P - pikinier\n"
                                             + "m/M - miecznik\n"
@@ -94,16 +98,33 @@ public class VillagesCoords {
         scroller.setFitToWidth(true);
 
         int count = 0;
+
         for(int i=0; i<attackInfo.getOwnersAmount(); ++i){
-            for(int j=0; j<attackInfo.getOwner(i).getAmountOfVillages(); ++j){
+            for(int j=0; j<attackInfo.getOwner(i).villages.size(); ++j){
+                allVillagesNames.add(attackInfo.getOwner(i).villages.get(j).getName());
+                allVillagesCoords.add(attackInfo.getOwner(i).villages.get(j).getCoords());
+            }
+        }
+
+        List<String> villageName = new ArrayList<>();
+
+        for(int i=0; i<attackInfo.getOwnersAmount(); ++i){
+            villageName.clear();
+            for(int j=0; j<attackInfo.getOwner(i).villages.size(); ++j){
+                villageName.add(attackInfo.getOwner(i).villages.get(j).getName());
+            }
+            for(int j=0; j<attackInfo.getOwner(i).getAmountOfAttackingVillages(); ++j){
                 count++;
                 Label ownerName = new Label(attackInfo.getOwner(i).getName());
-                TextField villageCoord = new TextField();
                 TextField typeOfAttack = new TextField();
 
-                villageInfo.addRow(count, ownerName, villageCoord, typeOfAttack);
+                ComboBox villageCoordsBox = new ComboBox();
+                villageCoordsBox.getItems().addAll(villageName);
+                villageCoordsBox.setValue("Wybierz wioske...");
 
-                listOfCoords.add(villageCoord);
+                villageInfo.addRow(count, ownerName, villageCoordsBox, typeOfAttack);
+
+                listOfCoords.add(villageCoordsBox);
                 listOfTypesOfAttacks.add(typeOfAttack);
             }
         }
@@ -118,10 +139,11 @@ public class VillagesCoords {
             TravelTime tt = new TravelTime(new Village(attackInfo.getToAttackVillage()));
             tt.setAttackTime(new Time(TimeConverter.convertStringToTable(attackInfo.getAttackTime())));
             for(int i=0; i<attackInfo.getOwnersAmount(); ++i){
-                for(int j=0; j<attackInfo.getOwner(i).getAmountOfVillages(); ++j){
-                    Village village = new Village(listOfCoords.get(counter).getText());
+                for(int j=0; j<attackInfo.getOwner(i).getAmountOfAttackingVillages(); ++j){
+                    String nameOfVillage = (String) listOfCoords.get(counter).getSelectionModel().getSelectedItem();
+                    Village village = new Village(nameOfVillage, getCoordFromComboBox(nameOfVillage));
                     village.setTypesOfAttack(listOfTypesOfAttacks.get(counter).getText());
-                    attackInfo.getOwner(i).addVillage(village);
+                    attackInfo.getOwner(i).addAttackingVillage(village);
                     tt.setEstimatedTime(village);
                     tt.setSendTime(village);
                     counter++;
@@ -152,5 +174,14 @@ public class VillagesCoords {
         vbox.getChildren().add(settingsButtons);
 
         window.setScene(new Scene(scroller, 700, 800));
+    }
+
+    public String getCoordFromComboBox(String name){
+        for(int i=0; i<allVillagesNames.size(); ++i){
+            if(allVillagesNames.get(i).equals(name)){
+                return (String) allVillagesCoords.get(i);
+            }
+        }
+        return "";
     }
 }

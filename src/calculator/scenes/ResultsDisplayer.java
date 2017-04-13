@@ -70,10 +70,8 @@ public class ResultsDisplayer {
 
         for(int i=0; i<attackInfo.getOwnersAmount(); ++i){
             Owner owner = attackInfo.getOwner(i);
-
-            for(int j=0; j<owner.getAmountOfVillages(); ++j){
-
-                Village village = owner.villages.get(j);
+            for(int j=0; j<owner.getAmountOfAttackingVillages(); ++j){
+                Village village = owner.attackingVillages.get(j);
                 TimeDisplay td = new TimeDisplay(village);
                 village.setAmountOfAttack(td.checkAttackTypeAndSave());
                 village.setTimeDisplayer(td);

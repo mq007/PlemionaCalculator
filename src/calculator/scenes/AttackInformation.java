@@ -69,7 +69,6 @@ public class AttackInformation {
                 attackInfo.setAttackTime(attackTimeTextField.getText());
                 attackInfo.setToAttackVillage(attackTargetTextField.getText());
                 new AttackingOwnersAndVillages(attackInfo, window);
-                //window.setScene(setOwnersNamesAndVillagesAmountScene(window));
             }catch(NumberFormatException error){
                 error.printStackTrace();
             }

@@ -1,6 +1,7 @@
 package calculator.scenes;
 
 import calculator.AttackInfo;
+import calculator.HTMLVillages;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -81,7 +82,9 @@ public class AttackingOwnersAndVillages {
             for(int i=0; i<listOfNames.size(); ++i){
                 attackInfo.addOwner(listOfNames.get(i).getText());
                 int amountOfVillages = Integer.parseInt(listOfNumbers.get(i).getText());
-                attackInfo.getOwner(i).setAmountOfVillages(amountOfVillages);
+                attackInfo.getOwner(i).setAmountOfAttackingVillages(amountOfVillages);
+                HTMLVillages htmlVillages = new HTMLVillages(attackInfo.getOwner(i));
+                htmlVillages.prepareVillageInfo();
             }
             new VillagesCoords(attackInfo, window);
         });
