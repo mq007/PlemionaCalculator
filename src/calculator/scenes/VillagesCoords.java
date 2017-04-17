@@ -1,42 +1,39 @@
 package calculator.scenes;
 
 import calculator.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VillagesCoords {
+class VillagesCoords {
 
-    Stage window;
-    AttackInfo attackInfo;
-    List<String> allVillagesNames = new ArrayList<>();
-    List<String> allVillagesCoords = new ArrayList<>();
+    private Scene scene;
+    private AttackInfo attackInfo;
+    private List<String> allVillagesNames = new ArrayList<>();
+    private List<String> allVillagesCoords = new ArrayList<>();
 
-    public VillagesCoords(AttackInfo attackInfo, Stage window){
-        this.window = window;
+
+    VillagesCoords(AttackInfo attackInfo, Scene scene){
+        this.scene = scene;
         this.attackInfo = attackInfo;
         setScene();
     }
 
+
     private void setScene(){
         System.out.println("setVillagesCoordsScene");
-        List<ComboBox> listOfCoords = new ArrayList<>();
+        List<ComboBox<String>> listOfCoords = new ArrayList<>();
         List<TextField> listOfTypesOfAttacks = new ArrayList<>();
 
         Label sceneDescription = new Label("Wprowadź dane dotyczące wiosek i rodzaj ataku");
@@ -118,7 +115,7 @@ public class VillagesCoords {
                 Label ownerName = new Label(attackInfo.getOwner(i).getName());
                 TextField typeOfAttack = new TextField();
 
-                ComboBox villageCoordsBox = new ComboBox();
+                ComboBox<String> villageCoordsBox = new ComboBox<>();
                 villageCoordsBox.getItems().addAll(villageName);
                 villageCoordsBox.setValue("Wybierz wioske...");
 
@@ -140,7 +137,7 @@ public class VillagesCoords {
             tt.setAttackTime(new Time(TimeConverter.convertStringToTable(attackInfo.getAttackTime())));
             for(int i=0; i<attackInfo.getOwnersAmount(); ++i){
                 for(int j=0; j<attackInfo.getOwner(i).getAmountOfAttackingVillages(); ++j){
-                    String nameOfVillage = (String) listOfCoords.get(counter).getSelectionModel().getSelectedItem();
+                    String nameOfVillage = listOfCoords.get(counter).getSelectionModel().getSelectedItem();
                     Village village = new Village(nameOfVillage, getCoordFromComboBox(nameOfVillage));
                     village.setTypesOfAttack(listOfTypesOfAttacks.get(counter).getText());
                     attackInfo.getOwner(i).addAttackingVillage(village);
@@ -150,21 +147,16 @@ public class VillagesCoords {
                 }
             }
             attackInfo.setFullAmountOfAttackingVillages(counter);
-            new ResultsDisplayer(attackInfo, window);
+            new ResultsDisplayer(attackInfo, scene);
         });
 
-        listOfTypesOfAttacks.get(listOfTypesOfAttacks.size()-1).setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.ENTER){
-                    accept.fire();
-                }
+        listOfTypesOfAttacks.get(listOfTypesOfAttacks.size()-1).setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER){
+                accept.fire();
             }
         });
 
-        goBack.setOnAction(e ->{
-            new AttackingOwnersAndVillages(attackInfo, window);
-        });
+        goBack.setOnAction(e -> new AttackingOwnersAndVillages(attackInfo, scene));
 
         HBox settingsButtons = new HBox();
         settingsButtons.setAlignment(Pos.CENTER);
@@ -173,13 +165,14 @@ public class VillagesCoords {
 
         vbox.getChildren().add(settingsButtons);
 
-        window.setScene(new Scene(scroller, 700, 800));
+
+        scene.setRoot(scroller);
     }
 
-    public String getCoordFromComboBox(String name){
+    private String getCoordFromComboBox(String name){
         for(int i=0; i<allVillagesNames.size(); ++i){
             if(allVillagesNames.get(i).equals(name)){
-                return (String) allVillagesCoords.get(i);
+                return allVillagesCoords.get(i);
             }
         }
         return "";

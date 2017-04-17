@@ -15,11 +15,11 @@ import javafx.stage.Stage;
 
 public class MessageGenerator {
 
-    Stage window;
-    AttackInfo attackInfo;
+    private Scene scene;
+    private AttackInfo attackInfo;
 
-    public MessageGenerator(AttackInfo attackInfo, Stage window){
-        this.window = window;
+    MessageGenerator(AttackInfo attackInfo, Scene scene){
+        this.scene = scene;
         this.attackInfo = attackInfo;
         setScene();
     }
@@ -57,7 +57,7 @@ public class MessageGenerator {
         }
 
         vbox.getChildren().add(message);
-        window.setScene(new Scene(vbox, 700, 800));
+        scene.setRoot(vbox);
     }
 
     private String playerNameBBCode(String name){

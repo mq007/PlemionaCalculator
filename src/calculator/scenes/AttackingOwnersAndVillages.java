@@ -23,13 +23,13 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttackingOwnersAndVillages {
+class AttackingOwnersAndVillages {
 
-    Stage window;
-    AttackInfo attackInfo;
+    private Scene scene;
+    private AttackInfo attackInfo;
 
-    public AttackingOwnersAndVillages(AttackInfo attackInfo, Stage window){
-        this.window = window;
+    AttackingOwnersAndVillages(AttackInfo attackInfo, Scene scene){
+        this.scene = scene;
         this.attackInfo = attackInfo;
         setScene();
     }
@@ -58,8 +58,8 @@ public class AttackingOwnersAndVillages {
         Label amount = new Label("ilość wiosek:");
         ownersDescription.add(name, 1, 0);
         ownersDescription.add(amount, 2, 0);
-        ownersDescription.setHalignment(name, HPos.CENTER);
-        ownersDescription.setHalignment(amount, HPos.CENTER);
+        GridPane.setHalignment(name, HPos.CENTER);
+        GridPane.setHalignment(amount, HPos.CENTER);
         ownersDescription.setVgap(10);
         ownersDescription.setHgap(10);
 
@@ -86,19 +86,14 @@ public class AttackingOwnersAndVillages {
                 HTMLVillages htmlVillages = new HTMLVillages(attackInfo.getOwner(i));
                 htmlVillages.prepareVillageInfo();
             }
-            new VillagesCoords(attackInfo, window);
+            new VillagesCoords(attackInfo, scene);
         });
 
-        goBack.setOnAction(e -> {
-            new AttackInformation(attackInfo, window);
-        });
+        goBack.setOnAction(e -> new AttackInformation(attackInfo, scene));
 
-        listOfNumbers.get(listOfNumbers.size()-1).setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.ENTER){
-                    accept.fire();
-                }
+        listOfNumbers.get(listOfNumbers.size()-1).setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER){
+                accept.fire();
             }
         });
 
@@ -108,6 +103,7 @@ public class AttackingOwnersAndVillages {
         settingsButtons.getChildren().addAll(goBack, accept);
         vbox.getChildren().addAll(ownersDescription, settingsButtons);
 
-        window.setScene(new Scene(vbox, 700, 800));
+        //window.setScene(new Scene(vbox, 700, 800));
+        scene.setRoot(vbox);
     }
 }

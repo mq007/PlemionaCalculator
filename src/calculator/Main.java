@@ -4,6 +4,7 @@ import calculator.scenes.AttackInformation;
 import calculator.scenes.MessageGenerator;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,10 +26,10 @@ import java.util.Stack;
 
 public class Main extends Application {
 
-    Stack<Scene> scenes = new Stack<Scene>();
-    Stage window;
+    Stack<Scene> scenes = new Stack<>();
+    private Stage window;
     String attackTarget;
-    AttackInfo attackInfo;
+    private AttackInfo attackInfo;
 
     String text = "";
 
@@ -38,14 +39,13 @@ public class Main extends Application {
         attackInfo = new AttackInfo();
         window = primaryStage;
         window.setTitle("Plemiona Calculator");
-        //window.setScene(Scenes.setAmountOfOwnersScene(window));
-        new AttackInformation(attackInfo, window);
+        Scene scene = new Scene(new VBox(), 700, 800);
+        window.setScene(scene);
+        new AttackInformation(attackInfo, scene);
         window.show();
     }
 
     public static void main(String[] args) {
-        //HTMLVillages htmlVillages = new HTMLVillages("mq007");
-        //htmlVillages.prepareVillageInfo();
         launch(args);
     }
 }

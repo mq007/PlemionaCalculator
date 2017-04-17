@@ -20,11 +20,18 @@ import javafx.stage.Stage;
 
 public class AttackInformation {
 
-    Stage window;
-    AttackInfo attackInfo;
+    private Stage window;
+    private Scene scene;
+    private AttackInfo attackInfo;
 
     public AttackInformation(AttackInfo attackInfo, Stage window){
         this.window = window;
+        this.attackInfo = attackInfo;
+        setScene();
+    }
+
+    public AttackInformation(AttackInfo attackInfo, Scene scene){
+        this.scene = scene;
         this.attackInfo = attackInfo;
         setScene();
     }
@@ -60,7 +67,7 @@ public class AttackInformation {
         Button aplyOwnersButton = new Button("Zatwierdź");
         aplyOwnersButton.setPrefSize(100,20);
         attackDescription.add(aplyOwnersButton, 1, 3);
-        attackDescription.setHalignment(aplyOwnersButton, HPos.RIGHT);
+        GridPane.setHalignment(aplyOwnersButton, HPos.RIGHT);
 
         aplyOwnersButton.setOnAction(e->{
             try{
@@ -68,24 +75,22 @@ public class AttackInformation {
                 attackInfo.setOwnersAmount(amountOfOwners);
                 attackInfo.setAttackTime(attackTimeTextField.getText());
                 attackInfo.setToAttackVillage(attackTargetTextField.getText());
-                new AttackingOwnersAndVillages(attackInfo, window);
+                new AttackingOwnersAndVillages(attackInfo, scene);
             }catch(NumberFormatException error){
                 error.printStackTrace();
             }
         });
 
-        ownersAmountTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.ENTER){
-                    aplyOwnersButton.fire();
-                }
+        ownersAmountTextField.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER){
+                aplyOwnersButton.fire();
             }
         });
 
         vbox.getChildren().add(attackDescription);
 
-        window.setScene(new Scene(vbox, 700, 800));
+        scene.setRoot(vbox);
+        //window.setScene(new Scene(vbox, 700, 800));
     }
 }
 

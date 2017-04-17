@@ -17,13 +17,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class ResultsDisplayer {
+class ResultsDisplayer {
 
-    Stage window;
-    AttackInfo attackInfo;
+    private Scene scene;
+    private AttackInfo attackInfo;
 
-    public ResultsDisplayer(AttackInfo attackInfo, Stage window){
-        this.window = window;
+    ResultsDisplayer(AttackInfo attackInfo, Scene scene){
+        this.scene = scene;
         this.attackInfo = attackInfo;
         setScene();
     }
@@ -98,13 +98,9 @@ public class ResultsDisplayer {
         Button generate = new Button("Wygeneruj wiadomość");
         Button goBack = new Button("Powrót");
 
-        generate.setOnAction(e -> {
-            new MessageGenerator(attackInfo, window);
-        });
+        generate.setOnAction(e -> new MessageGenerator(attackInfo, scene));
 
-        goBack.setOnAction(e -> {
-            new VillagesCoords(attackInfo, window);
-        });
+        goBack.setOnAction(e -> new VillagesCoords(attackInfo, scene));
 
         HBox settingsButtons = new HBox();
         settingsButtons.setAlignment(Pos.CENTER);
@@ -112,6 +108,7 @@ public class ResultsDisplayer {
         settingsButtons.getChildren().addAll(goBack, generate);
         vbox.getChildren().addAll(settingsButtons);
 
-        window.setScene(new Scene(vbox, 700, 800));
+        //window.setScene(new Scene(vbox, 700, 800));
+        scene.setRoot(vbox);
     }
 }
